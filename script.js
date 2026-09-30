@@ -33,15 +33,192 @@ bookingForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
 
-    // Get the information from the form
-    const name = document.getElementById("name").value;
-    const service = document.getElementById("service").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-    const notes = document.getElementById("notes").value;
+    // =============================
+    // GET FORM INFORMATION
+    // =============================
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const service =
+        document.getElementById("service").value;
+
+    const date =
+        document.getElementById("date").value;
+
+    const time =
+        document.getElementById("time").value;
+
+    const notes =
+        document.getElementById("notes").value.trim();
 
 
-    // Create an appointment object
+    // =============================
+    // BASIC VALIDATION
+    // =============================
+
+    if (!name || !service || !date || !time) {
+
+        formMessage.textContent =
+            "Please complete all required fields.";
+
+        formMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // =============================
+    // CHECK SERVICE
+    // =============================
+
+    const duration =
+        serviceDurations[service];
+
+    if (!duration) {
+
+        formMessage.textContent =
+            "Please select a valid service.";
+
+        formMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // =============================
+    // CHECK DATE
+    // =============================
+
+    const selectedDate =
+        new Date(date + "T00:00:00");
+
+    const today =
+        new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+
+    // Prevent past dates
+    if (selectedDate < today) {
+
+        formMessage.textContent =
+            "Please select a future date.";
+
+        formMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // =============================
+    // CHECK JUSTIN'S SCHEDULE
+    // =============================
+
+    const dayOfWeek =
+        selectedDate.getDay();
+
+
+    // Thursday is unavailable
+    if (!availableDays[dayOfWeek]) {
+
+        formMessage.textContent =
+            "Justin is not available on Thursdays. Please choose another day.";
+
+        formMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // =============================
+    // CHECK TIME
+    // =============================
+
+    const [hour, minute] =
+        time.split(":").map(Number);
+
+    const startMinutes =
+        hour * 60 + minute;
+
+    const appointmentEnd =
+        startMinutes + duration;
+
+
+    // Make sure appointment is within
+    // Justin's working hours
+    if (
+        startMinutes < startTime ||
+        appointmentEnd > endTime
+    ) {
+
+        formMessage.textContent =
+            "Please select an available appointment time.";
+
+        formMessage.style.color = "red";
+
+        return;
+    }
+
+
+    // =============================
+    // CHECK SAME-DAY PAST TIMES
+    // =============================
+
+    const selectedIsToday =
+        date === currentDate;
+
+
+    if (selectedIsToday) {
+
+        const now =
+            new Date();
+
+        const currentMinutes =
+            now.getHours() * 60 +
+            now.getMinutes();
+
+
+        if (startMinutes <= currentMinutes) {
+
+            formMessage.textContent =
+                "Please select a future appointment time.";
+
+            formMessage.style.color = "red";
+
+            return;
+        }
+    }
+
+
+    // =============================
+    // RE-CHECK AVAILABILITY
+    // =============================
+
+    if (
+        isTimeBooked(
+            date,
+            startMinutes,
+            duration
+        )
+    ) {
+
+        formMessage.textContent =
+            "That appointment time is no longer available. Please select another time.";
+
+        formMessage.style.color = "red";
+
+        // Refresh available times
+        createTimeSlots();
+
+        return;
+    }
+
+
+    // =============================
+    // CREATE APPOINTMENT
+    // =============================
+
     const appointment = {
 
         id: Date.now(),
@@ -61,23 +238,31 @@ bookingForm.addEventListener("submit", function(event) {
     };
 
 
-    // Get existing appointments
+    // =============================
+    // SAVE APPOINTMENT
+    // =============================
+
     let appointments =
-        JSON.parse(localStorage.getItem("appointments")) || [];
+        JSON.parse(
+            localStorage.getItem("appointments")
+        ) || [];
 
 
-    // Add the new appointment
-    appointments.push(appointment);
+    appointments.push(
+        appointment
+    );
 
 
-    // Save appointments
     localStorage.setItem(
         "appointments",
         JSON.stringify(appointments)
     );
 
 
-    // Show confirmation
+    // =============================
+    // SHOW CONFIRMATION
+    // =============================
+
     formMessage.textContent =
         "Your appointment request has been submitted!";
 
@@ -87,7 +272,13 @@ bookingForm.addEventListener("submit", function(event) {
     // Clear the form
     bookingForm.reset();
 
+
+    // Reset the time dropdown
+    createTimeSlots();
+
 });
+
+
 
 // =============================
 // SERVICE CARD SELECTION
@@ -463,6 +654,20 @@ function createTimeSlots() {
         minutes += 30
     ) {
 
+        // If today is selected, don't show past times
+        if (dateInput.value === currentDate) {
+
+            const now = new Date();
+
+            const currentMinutes =
+                now.getHours() * 60 +
+                now.getMinutes();
+
+            if (minutes <= currentMinutes) {
+                continue;
+            }
+        }
+
         const hour = Math.floor(minutes / 60);
         const minute = minutes % 60;
 
@@ -513,6 +718,21 @@ function createTimeSlots() {
 
         timeSelect.appendChild(option);
         
+    }
+
+
+    // Check if any times are available
+    if (timeSelect.options.length === 1) {
+
+        timeSelect.innerHTML = `
+            <option value="">
+                No available times
+            </option>
+        `;
+
+        timeSelect.disabled = true;
+
+        return;
     }
 
 
