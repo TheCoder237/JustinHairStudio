@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Stylist Dashboard | Justin Hair Studio</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body class="dashboard-page">
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+
+        <div class="dashboard-header-content">
+
+            <div>
+                <p class="small-title">
+                    JUSTIN HAIR STUDIO
+                </p>
+
+                <h1>
+                    Stylist Dashboard
+                </h1>
+
+                <p>
+                    View and manage appointment requests.
+                </p>
+            </div>
+
+
+            <a href="index.html"
+               class="button dashboard-back-button">
+
+                Back to Website
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <main class="dashboard-main">
+
+        <!-- Appointment Statistics -->
+        <section class="dashboard-stats">
+
+            <div class="stat-card">
+                <p>Pending</p>
+                <h2 id="pendingCount">0</h2>
+            </div>
+        
+            <div class="stat-card">
+                <p>Accepted</p>
+                <h2 id="acceptedCount">0</h2>
+            </div>
+        
+            <div class="stat-card">
+                <p>Completed</p>
+                <h2 id="completedCount">0</h2>
+            </div>
+        
+            <div class="stat-card">
+                <p>Declined</p>
+                <h2 id="declinedCount">0</h2>
+            </div>
+        
+            <div class="stat-card">
+                <p>Cancelled</p>
+                <h2 id="cancelledCount">0</h2>
+            </div>
+        
+            <div class="stat-card">
+                <p>Total</p>
+                <h2 id="totalCount">0</h2>
+            </div>
+        
+        </section>
+
+
+        <!-- Appointment List -->
+        <section class="appointments-section">
+
+            <div class="appointments-heading">
+
+                <div>
+
+                    <p class="small-title">
+                        APPOINTMENTS
+                    </p>
+
+                    <h2>
+                        Appointment Requests
+                    </h2>
+
+                </div>
+
+
+                <select id="statusFilter">
+
+                    <option value="All">
+                        All appointments
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="Accepted">
+                        Accepted
+                    </option>
+
+                    <option value="Completed">
+                        Completed
+                    </option>
+
+                    <option value="Declined">
+                        Declined
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- JavaScript will put appointments here -->
+            <div id="appointmentList">
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

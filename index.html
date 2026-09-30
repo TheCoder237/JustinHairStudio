@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Justin Hair Studio offers personalized haircut and hair color services by appointment.">
+
+    <title>Justin Hair Studio</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">
+                <h2>Justin Hair Studio</h2>
+            </div>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="#home">Home</a>
+                </li>
+
+                <li>
+                    <a href="#services">Services</a>
+                </li>
+
+                <li>
+                    <a href="#about">About</a>
+                </li>
+
+                <li>
+                    <a href="#booking">Book</a>
+                </li>
+            </ul>
+
+        </nav>
+    </header>
+
+
+    <main>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+
+            <div class="hero-content">
+
+                <p class="small-title">
+                    HAIRCUTS • COLOR • APPOINTMENT ONLY
+                </p>
+
+                <h1>
+                    Hair services by Justin.
+                </h1>
+
+                <p class="hero-description">
+                    Personalized haircuts and color services
+                    with simple appointment booking.
+                </p>
+
+                <a href="#booking" class="button">
+                    Book an Appointment
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- Services Section -->
+        <section id="services" class="services">
+
+            <div class="section-heading">
+
+                <p class="small-title">
+                    SERVICES
+                </p>
+
+                <h2>
+                    Choose your service.
+                </h2>
+
+            </div>
+
+
+            <div class="services-container">
+
+                <!-- Haircut -->
+                <div class="service-card" data-service="Haircut">
+
+                    <h3>Haircut</h3>
+
+                    <p>
+                        A personalized haircut including
+                        shaping, cleanup, and finishing.
+                    </p>
+
+                </div>
+
+
+                <!-- Hair Color -->
+                <div class="service-card" data-service="Hair Color">
+
+                    <h3>Hair Color</h3>
+
+                    <p>
+                        Hair color application or refresh
+                        based on your desired look.
+                    </p>
+
+                </div>
+
+
+                <!-- Haircut and Color -->
+                <div class="service-card" data-service="Haircut & Color">
+
+                    <h3>Haircut &amp; Color</h3>
+
+                    <p>
+                        A combined appointment for both
+                        haircut and color services.
+                    </p>
+
+                </div>
+
+
+                <!-- Touch Up -->
+                <div class="service-card" data-service="Touch-Up">
+
+                    <h3>Touch-Up</h3>
+
+                    <p>
+                        Quick cleanup and maintenance
+                        between full appointments.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- About Section -->
+        <section id="about" class="about">
+
+            <div class="about-content">
+
+                <p class="small-title">
+                    ABOUT
+                </p>
+
+                <h2>
+                    Hair services made simple.
+                </h2>
+
+                <p>
+                    Justin Hair Studio provides personalized
+                    haircut and hair color services by appointment.
+                </p>
+
+                <p>
+                    Book online by selecting the service,
+                    date, and time that works best for you.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Booking Section -->
+        <section id="booking" class="booking">
+
+            <div class="booking-info">
+
+                <p class="small-title">
+                    BOOK AN APPOINTMENT
+                </p>
+
+                <h2>
+                    Request a time with Justin.
+                </h2>
+
+                <p>
+                    Select your service and preferred appointment
+                    time. Your request will be submitted for approval.
+                </p>
+
+            </div>
+
+
+            <!-- Booking Form -->
+            <form id="bookingForm">
+
+                <!-- Name -->
+                <div class="form-group">
+
+                    <label for="name">
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Your name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Service -->
+                <div class="form-group">
+
+                    <label for="service">
+                        Service
+                    </label>
+
+                    <select
+                        id="service"
+                        name="service"
+                        required
+                    >
+
+                        <option value="">
+                            Select a service
+                        </option>
+
+                        <option value="Haircut">
+                            Haircut
+                        </option>
+
+                        <option value="Hair Color">
+                            Hair Color
+                        </option>
+
+                        <option value="Haircut & Color">
+                            Haircut &amp; Color
+                        </option>
+
+                        <option value="Touch-Up">
+                            Touch-Up
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Date -->
+                <div class="form-group">
+
+                    <label for="date">
+                        Preferred Date
+                    </label>
+
+                    <div class="date-picker">
+
+                        <button type="button" id="datePickerButton">
+                             Select a date
+                        </button>
+
+                        <div id="calendar" class="calendar hidden">
+
+                            <div class="calendar-header">
+
+                                <button type="button" id="previousMonth">
+                                    &lt;
+                                </button>
+
+                                <h3 id="calendarMonth"></h3>
+
+                                <button type="button" id="nextMonth">
+                                    &gt;
+                                </button>
+
+                            </div>
+
+                            <div class="calendar-weekdays">
+
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+
+                            </div>
+
+                            <div id="calendarDays" class="calendar-days"></div>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            id="date"
+                            name="date"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Time -->
+                <div class="form-group">
+
+                    <label for="time">
+                        Preferred Time
+                    </label>
+
+                    <select
+                        id="time"
+                        name="time"
+                        required
+                        disabled
+                    >
+                        <option value="">
+                            Select a time
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Notes -->
+                <div class="form-group">
+
+                    <label for="notes">
+                        Appointment Notes
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        rows="5"
+                        maxlength="300"
+                        placeholder="Example: low fade, trim the top, dark brown color..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="button submit-button"
+                >
+                    Request Appointment
+                </button>
+
+
+                <p id="formMessage"></p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <h3>
+                Justin Hair Studio
+            </h3>
+
+            <p>
+                Haircuts • Color • By Appointment
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
