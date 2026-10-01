@@ -15,12 +15,88 @@
 
 <body class="dashboard-page">
 
+    <!-- Login Screen -->
+    <section id="loginSection" class="dashboard-main">
+
+        <section class="appointments-section">
+
+            <div class="appointments-heading">
+
+                <div>
+
+                    <p class="small-title">
+                        JUSTIN HAIR STUDIO
+                    </p>
+
+                    <h2>
+                        Stylist Login
+                    </h2>
+
+                    <p>
+                        Sign in to manage appointments.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="loginForm">
+
+                <div>
+                    <label for="loginEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        required
+                    >
+                </div>
+
+
+                <div>
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        required
+                    >
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="button"
+                >
+                    Log In
+                </button>
+
+
+                <p id="loginMessage"></p>
+
+            </form>
+
+        </section>
+
+    </section>
+
+
     <!-- Dashboard Header -->
-    <header class="dashboard-header">
+    <header
+        class="dashboard-header"
+        id="dashboardHeader"
+        hidden
+    >
 
         <div class="dashboard-header-content">
 
             <div>
+
                 <p class="small-title">
                     JUSTIN HAIR STUDIO
                 </p>
@@ -32,22 +108,41 @@
                 <p>
                     View and manage appointment requests.
                 </p>
+
             </div>
 
 
-            <a href="index.html"
-               class="button dashboard-back-button">
+            <div>
 
-                Back to Website
+                <a
+                    href="index.html"
+                    class="button dashboard-back-button"
+                >
+                    Back to Website
+                </a>
 
-            </a>
+
+                <button
+                    type="button"
+                    class="button"
+                    id="logoutButton"
+                >
+                    Log Out
+                </button>
+
+            </div>
 
         </div>
 
     </header>
 
 
-    <main class="dashboard-main">
+    <!-- Dashboard -->
+    <main
+        class="dashboard-main"
+        id="dashboardContent"
+        hidden
+    >
 
         <!-- Appointment Statistics -->
         <section class="dashboard-stats">
@@ -56,32 +151,32 @@
                 <p>Pending</p>
                 <h2 id="pendingCount">0</h2>
             </div>
-        
+
             <div class="stat-card">
                 <p>Accepted</p>
                 <h2 id="acceptedCount">0</h2>
             </div>
-        
+
             <div class="stat-card">
                 <p>Completed</p>
                 <h2 id="completedCount">0</h2>
             </div>
-        
+
             <div class="stat-card">
                 <p>Declined</p>
                 <h2 id="declinedCount">0</h2>
             </div>
-        
+
             <div class="stat-card">
                 <p>Cancelled</p>
                 <h2 id="cancelledCount">0</h2>
             </div>
-        
+
             <div class="stat-card">
                 <p>Total</p>
                 <h2 id="totalCount">0</h2>
             </div>
-        
+
         </section>
 
 
@@ -134,15 +229,132 @@
             </div>
 
 
-            <!-- JavaScript will put appointments here -->
-            <div id="appointmentList">
+            <div id="appointmentList"></div>
+            
+            <div id="rebookSection" hidden>
+                <div class="rebook-header">
 
+                    <p class="small-title">
+                        REBOOK APPOINTMENT
+                    </p>
+                
+                    <h3>
+                        Choose a new date and time
+                    </h3>
+                
+                </div>
+            
+            
+                <div class="booking-date">
+                
+                    <button
+                        type="button"
+                        id="rebookDatePickerButton"
+                        class="date-picker-button"
+                    >
+                        Select a date
+                    </button>
+                
+                
+                    <div
+                        id="rebookCalendar"
+                        class="calendar hidden"
+                    >
+                
+                        <div class="calendar-header">
+                        
+                            <button
+                                type="button"
+                                id="rebookPreviousMonth"
+                            >
+                                ‹
+                            </button>
+                        
+                            <h3 id="rebookCalendarMonth"></h3>
+                        
+                            <button
+                                type="button"
+                                id="rebookNextMonth"
+                            >
+                                ›
+                            </button>
+                        
+                        </div>
+                    
+                    
+                        <div class="calendar-weekdays">
+                        
+                            <span>Sun</span>
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                        
+                        </div>
+                    
+                    
+                        <div
+                            id="rebookCalendarDays"
+                            class="calendar-days"
+                        ></div>
+                    
+                    </div>
+                
+                
+                    <input
+                        type="hidden"
+                        id="rebookDate"
+                    >
+                
+                </div>
+            
+            
+                <label for="rebookTime">
+                    New Time
+                </label>
+            
+                <select id="rebookTime">
+                
+                    <option value="">
+                        Select a date first
+                    </option>
+                
+                </select>
+            
+            
+                <div class="rebook-actions">
+                
+                    <button
+                        type="button"
+                        class="button"
+                        id="confirmRebookButton"
+                    >
+                        Confirm Rebook
+                    </button>
+                
+                    <button
+                        type="button"
+                        class="button"
+                        id="cancelRebookButton"
+                    >
+                        Cancel
+                    </button>
+                
+                </div>
+            
+            
+                <p id="rebookMessage"></p>
+            
             </div>
 
         </section>
 
     </main>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="admin.js"></script>
 

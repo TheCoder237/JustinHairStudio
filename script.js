@@ -1,3 +1,13 @@
+const SUPABASE_URL = "https://pggbixquqqmdcuvmnbzf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_XzJ_Br01g38uTHaetQa3CA_JJRJas6u";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+
 // Get the booking form
 const bookingForm = document.getElementById("bookingForm");
 
@@ -27,7 +37,7 @@ dateInput.min = currentDate;
 // BOOKING FORM
 // =============================
 
-bookingForm.addEventListener("submit", function(event) {
+bookingForm.addEventListener("submit", async function(event) {
 
     // Stop the page from refreshing
     event.preventDefault();
@@ -196,7 +206,7 @@ bookingForm.addEventListener("submit", function(event) {
     // =============================
 
     if (
-        isTimeBooked(
+        await isTimeBooked(
             date,
             startMinutes,
             duration
@@ -220,44 +230,38 @@ bookingForm.addEventListener("submit", function(event) {
     // =============================
 
     const appointment = {
-
-        id: Date.now(),
-
         name: name,
-
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
         service: service,
-
         date: date,
-
         time: time,
-
         notes: notes,
-
         status: "Pending"
-
     };
 
+    const { data, error } = await supabaseClient
+        .from("appointments")
+        .insert([{
+            name: appointment.name,
+            email: appointment.email,
+            phone: appointment.phone,
+            service: appointment.service,
+            date: appointment.date,
+            time: appointment.time,
+            notes: appointment.notes,
+            status: appointment.status
+        }]);
 
-    // =============================
-    // SAVE APPOINTMENT
-    // =============================
+    if (error) {
+        console.error("Supabase booking error:", error);
+        formMessage.textContent = "There was a problem submitting your appointment.";
+        return;
+    }
 
-    let appointments =
-        JSON.parse(
-            localStorage.getItem("appointments")
-        ) || [];
+    console.log("Supabase booking successful:", data);
 
-
-    appointments.push(
-        appointment
-    );
-
-
-    localStorage.setItem(
-        "appointments",
-        JSON.stringify(appointments)
-    );
-
+    
 
     // =============================
     // SHOW CONFIRMATION
@@ -546,61 +550,67 @@ const endTime = 22 * 60;   // 10:00 PM
 // CHECK FOR BOOKED TIMES
 // =============================
 
-function isTimeBooked(date, startMinutes, duration) {
+async function isTimeBooked(date, startMinutes, duration) {
 
-    // Get existing appointments
-    const appointments =
-        JSON.parse(localStorage.getItem("appointments")) || [];
+    const {
+        data: appointments,
+        error
+    } = await supabaseClient.rpc(
+        "get_booked_appointments",
+        {
+            requested_date: date
+        }
+    );
 
 
-    // Calculate when the new appointment would end
+    if (error) {
+
+        console.error(
+            "Error checking appointment availability:",
+            error
+        );
+
+        return true;
+
+    }
+
+
     const newAppointmentEnd =
         startMinutes + duration;
 
 
-    // Check each existing appointment
     return appointments.some(function(appointment) {
 
-        // Only confirmed appointments block the schedule
-        if (appointment.status !== "Accepted") {
-            return false;
-        }
-
-
-        // Only check appointments on the selected date
-        if (appointment.date !== date) {
-            return false;
-        }
-
-
-        // Get the existing appointment's start time
         const [hour, minute] =
-            appointment.time.split(":").map(Number);
+            appointment.appointment_time
+                .split(":")
+                .map(Number);
 
 
         const existingStart =
             hour * 60 + minute;
 
 
-        // Get the existing service duration
         const existingDuration =
-            serviceDurations[appointment.service];
+            serviceDurations[
+                appointment.appointment_service
+            ];
 
 
         const existingEnd =
             existingStart + existingDuration;
 
 
-        // Check if the appointments overlap
         return (
             startMinutes < existingEnd &&
             newAppointmentEnd > existingStart
         );
 
     });
+
 }
 
-function createTimeSlots() {
+async function createTimeSlots() {
 
     // Clear the current options
     timeSelect.innerHTML = `
@@ -695,7 +705,7 @@ function createTimeSlots() {
 
         // Check if this time overlaps a confirmed appointment
         const booked =
-            isTimeBooked(
+            await isTimeBooked(
                 dateInput.value,
                 minutes,
                 duration
@@ -753,3 +763,5 @@ serviceSelect.addEventListener("change", function() {
     createTimeSlots();
 
 });
+
+console.log("Supabase client:", supabaseClient);
