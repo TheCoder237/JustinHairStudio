@@ -1285,3 +1285,13 @@ footer {
 #rebookCalendar .rebook-calendar-empty {
     aspect-ratio: 1;
 }
+
+.clickable-stat {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}

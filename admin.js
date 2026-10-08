@@ -71,6 +71,22 @@ const rebookMessage =
 const statusFilter =
     document.getElementById("statusFilter");
 
+const clickableStatCards = document.querySelectorAll(".clickable-stat");
+
+clickableStatCards.forEach(card => {
+    card.addEventListener("click", async function () {
+        const selectedStatus = this.dataset.status;
+
+        statusFilter.value = selectedStatus;
+        await loadDashboard();
+
+        document.getElementById("appointmentList").scrollIntoView({ 
+            behavior: "smooth",
+            block: "start"
+        });
+    });
+});
+
 
 const pendingCount =
     document.getElementById("pendingCount");
@@ -1126,7 +1142,16 @@ function selectRebookDate(date) {
     );
 
 
-    loadRebookTimes();
+    loadRebookTimes().then(() => {
+        if (!rebookTime.disabled) {
+            rebookTime.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        
+            rebookTime.focus();
+        }
+    });
 
 }
 

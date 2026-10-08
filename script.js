@@ -11,6 +11,26 @@ const supabaseClient = window.supabase.createClient(
 // Get the booking form
 const bookingForm = document.getElementById("bookingForm");
 
+const phoneInput = document.getElementById("phone");
+
+phoneInput.addEventListener("input", function () {
+    let digits = this.value.replace(/\D/g, "");
+
+    if (digits.length > 10) {
+        digits = digits.slice(0, 10);
+    }
+
+    if (digits.length > 6) {
+        this.value = `(${digits.slice(0, 3)})${digits.slice(3, 6)}-${digits.slice(6)}`;
+    } else if (digits.length > 3) {
+        this.value = `(${digits.slice(0, 3)})${digits.slice(3)}`;
+    } else if (digits.length > 0) {
+        this.value = `(${digits}`;
+    } else {
+        this.value = "";
+    }
+});
+
 // Get the message area
 const formMessage = document.getElementById("formMessage");
 
@@ -472,7 +492,16 @@ function selectDate(date) {
     dateInput.value = selectedDate;
 
      // Create available appointment times
-    createTimeSlots();
+    createTimeSlots().then(() => {
+        if (!timeSelect.disabled) {
+            timeSelect.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        
+            timeSelect.focus();
+        }
+    });
 
     // Display the selected date on the button
     datePickerButton.textContent =
